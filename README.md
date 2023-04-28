@@ -1,0 +1,2 @@
+# informatikkurs
+LFSM
