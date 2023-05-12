@@ -1,0 +1,38 @@
+Einleitung:
+
+Verwendung von Arduino zur Überwachung von Umgebungstemperatur und Luftfeuchtigkeit
+Code basiert auf den Bibliotheken "Servo" und "DHT" für die Steuerung eines Servomotors und den DHT11-Sensor
+Sensoren und Pins:
+Verwendung des DHT11-Sensors zur Messung von Temperatur und Luftfeuchtigkeit
+Definition der Pins für LEDs und Servomotor
+Initialisierung:
+Einrichtung der seriellen Kommunikation und Startmeldung
+Initialisierung des DHT11-Sensors und Konfiguration der Pins
+Hauptschleife:
+Verzögerung von 2 Sekunden zwischen den Messungen
+Auslesen der Temperatur und Luftfeuchtigkeit vom Sensor
+Überprüfung der Sensorwerte:
+Fehlerbehandlung bei ungültigen Werten (NaN)
+Ausgabe der gemessenen Werte über die serielle Schnittstelle
+Temperaturüberwachung und Steuerung der LEDs:
+Wenn die Temperatur unter 25°C liegt:
+
+Grüne LED einschalten, gelbe und rote LED ausschalten
+Verzögerung von 1,5 Sekunden
+Wenn die Temperatur zwischen 25°C und 30°C liegt:
+
+Grüne LED ausschalten, gelbe LED einschalten
+Servomotor in drei Positionen (0°, 90°, 180°) drehen
+Verzögerung von 3 Sekunden zwischen den Positionen
+Wenn die Temperatur über 30°C liegt:
+
+Grüne und gelbe LED ausschalten, rote LED einschalten
+Servomotor in drei Positionen (0°, 90°, 180°) drehen
+Verzögerung von 3 Sekunden zwischen den Positionen
+Verzögerung von 15 Sekunden vor dem erneuten Durchlauf der Schleife
+Zusammenfassung:
+
+Der Code ermöglicht die Überwachung von Temperatur und Luftfeuchtigkeit mit dem DHT11-Sensor.
+LEDs werden entsprechend der Temperaturwerte gesteuert, um visuelles Feedback zu geben.
+Der Servomotor ermöglicht die mechanische Anzeige der Temperaturzustände.
+Arduino bietet eine einfache und kostengünstige Möglichkeit, Umgebungswerte zu erfassen und darauf zu reagieren.
