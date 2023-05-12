@@ -1,0 +1,77 @@
+
+#include <Servo.h>
+#include "DHT.h"                
+#define DHTPIN 5          // Hier die Pin Nummer eintragen wo der Sensor angeschlossen ist
+#define DHTTYPE DHT11     // Hier wird definiert was für ein Sensor ausgelesen wird. In 
+                          // unserem Beispiel möchten wir einen DHT11 auslesen, falls du 
+                          // ein DHT22 hast einfach DHT22 eintragen
+       
+/********************************( Definieren der Objekte )********************************/                          
+DHT dht(DHTPIN, DHTTYPE);
+const int greenLED= 12; //the code will flash the LED connected to pin 13
+const int yellowLED= 11; //the yellow LED is connected to digital pin 11
+const int redLED= 10; //the red LED is connected to digital pin 10
+Servo servoblau;
+void setup() {
+  Serial.begin(9600);
+  Serial.println("DHT11 Testprogramm");
+  dht.begin();
+  pinMode (greenLED, OUTPUT);
+pinMode (yellowLED, OUTPUT);
+pinMode (redLED, OUTPUT);
+servoblau.attach(8);
+}
+void loop() {
+  // Wait a few seconds between measurements.
+  delay(2000);                     // Hier definieren wir die Verweilzeit die gewartet wird  
+                                   // bis der Sensor wieder ausgelesen wird. Da der DHT11  
+                                   // auch ca. 2 Sekunden hat um seine Werte zuaktualisieren
+                                   // macht es keinen sinn ihn schneller auszulesen!
+                                    
+  float h = dht.readHumidity();    // Lesen der Luftfeuchtigkeit und speichern in die Variable h
+  float t = dht.readTemperature(); // Lesen der Temperatur in °C und speichern in die Variable t
+  
+/*********************( Überprüfen ob alles richtig Ausgelesen wurde )*********************/ 
+  if (isnan(h) || isnan(t)) {       
+    Serial.println("Fehler beim auslesen des Sensors!");
+    return;
+  }
+  // Nun senden wir die gemessenen Werte an den PC dise werden wir im Seriellem Monitor sehen
+  Serial.print("Luftfeuchtigkeit: ");
+  Serial.print(h);                  // Ausgeben der Luftfeuchtigkeit
+  Serial.print("%\t");              // Tabulator
+  Serial.print("Temperatur: ");
+  Serial.print(t);                  // Ausgeben der Temperatur
+  Serial.write('°');                // Schreiben des ° Zeichen
+  Serial.println("C");
+if   (dht.readTemperature()< 25){
+  digitalWrite (greenLED, HIGH);//turns green LED on
+digitalWrite (yellowLED, LOW);//turns yellow LED off
+digitalWrite (redLED, LOW);//turns red LED off
+delay(1500);
+}
+if   (dht.readTemperature()>25 && dht.readTemperature() <30){
+digitalWrite (greenLED, LOW); //turns green LED off
+digitalWrite (yellowLED, HIGH);//turns yellow LED on
+digitalWrite (redLED, LOW);//turns red LED off
+delay(2000);
+servoblau.write(0);
+delay(3000);
+servoblau.write(90);
+delay(3000);
+servoblau.write(180);
+delay(3000);
+}
+if   (dht.readTemperature()> 30){
+digitalWrite (greenLED, LOW); //turns green LED off
+digitalWrite (yellowLED, LOW);//turns yellow LED off
+digitalWrite (redLED, HIGH);//turns red LED on
+servoblau.write(0);
+delay(3000);
+servoblau.write(90);
+delay(3000);
+servoblau.write(180);
+delay(3000);
+delay(15000);
+}
+}
